@@ -1,0 +1,77 @@
+version: '3.9'
+
+services:
+
+  db:
+    build:
+      context: mongodb/
+    container_name: mongo_db
+    restart: always
+    env_file:
+      - .env
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${DB_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${DB_PASS}
+    image: mongo_db:latest
+    init: true
+    ports:
+      - "27017:27017"
+    networks:
+      - back_net
+    volumes:
+      - mongo_data:/data/db
+
+  mongo-express:
+    build:
+      context: mongo_express/
+    container_name: mongo_express
+    restart: always
+    ports:
+      - "8081:8081"
+    networks:
+      - back_net
+    env_file:
+      - .env
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: ${DB_USER}
+      ME_CONFIG_MONGODB_ADMINPASSWORD: ${DB_PASS}
+      ME_CONFIG_MONGODB_URL: ${DB_URL}
+    image: mongo_express:latest
+    init: True
+    depends_on:
+      - db
+
+  webapp:
+    build:
+      context: .
+    container_name: flask_api
+    env_file:
+      - .env
+    image: flask_api:latest
+    init: true
+    networks:
+      - back_net
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+
+  memory_test:
+    build:
+      context: memory_test/
+    container_name: memory_test
+    restart: always
+    image: memory_test:latest
+    init: true
+    networks:
+      - back_net
+    depends_on:
+      - webapp
+
+networks:
+  back_net:
+    name: flask_app.local
+    driver: bridge
+
+volumes:
+  mongo_data:

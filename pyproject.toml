@@ -1,0 +1,72 @@
+[tool.poetry]
+name = "flask-mongodb"
+version = "0.1.0"
+description = ""
+authors = ["Yuhen Liubimov <yauhenliubimau@gmail.com>"]
+readme = "README.md"
+packages = []
+
+[tool.poetry.dependencies]
+python = "^3.10"
+flask = "^3.0.0"
+pymongo = "^4.5.0"
+pydantic = "^2.4.2"
+flask-pydantic = "^0.11.0"
+gunicorn = "^21.2.0"
+environs = "^9.5.0"
+types-psutil = "^5.9.5.17"
+types-requests = "^2.31.0.10"
+
+
+[tool.poetry.group.dev.dependencies]
+black = "^23.10.1"
+flake8 = "^6.1.0"
+isort = "^5.12.0"
+mypy = "^1.6.1"
+
+
+[tool.poetry.group.memory_check.dependencies]
+logging = "^0.4.9.6"
+psutil = "^5.9.6"
+requests = "^2.31.0"
+
+[tool.mypy]
+cache_dir = ".venv/mypy/"
+exclude = [
+    ".idea",
+    ".vscode",
+    ".venv",
+    "mongo_express",
+    "mongodb"
+]
+pretty = true
+python_version = "3.10"
+
+[tool.black]
+line-length = 79
+target-version = ["py310"]
+include = '^.+\.pyi?$'
+extend-exclude = '''
+(
+    .*\.venv.* |
+    .*\.idea.* |
+    .*\.vscode.* |
+    .*\database.*
+)
+'''
+
+
+[tool.isort]
+force_single_line = true
+line_length = 79
+multi_line_output = 3
+profile = "black"
+skip = [
+    ".venv",
+    "mongo_express",
+    "mongodb"
+]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
