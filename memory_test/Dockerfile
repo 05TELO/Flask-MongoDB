@@ -8,7 +8,8 @@ WORKDIR /app
 RUN python3 -m venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
 
-RUN pip3 install --upgrade pip
+ARG PIP_VERSION=23.3.1
+RUN pip install "pip==${PIP_VERSION}"
 
 COPY ./requirements.txt ./requirements.txt
 

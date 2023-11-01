@@ -6,12 +6,15 @@ ENV PYTHONUNBUFFERED 1
 RUN apt-get update \
     && apt install --no-install-recommends --yes curl
 
-
 WORKDIR /api
 
 COPY ./pyproject.toml ./poetry.lock ./
 
-RUN pip install poetry
+ARG PIP_VERSION=23.3.1
+RUN pip install "pip==${PIP_VERSION}"
+
+ARG POETRY_VERSION=1.5.1
+RUN pip install "poetry==${POETRY_VERSION}"
 
 RUN poetry config virtualenvs.create false && poetry install --no-interaction --no-ansi --only main
 
