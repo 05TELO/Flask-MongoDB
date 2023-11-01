@@ -4,7 +4,7 @@ ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
 RUN apt-get update \
-    && apt install --no-install-recommends --yes curl
+    && apt-get install --no-install-recommends --yes curl
 
 WORKDIR /api
 
